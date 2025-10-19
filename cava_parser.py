@@ -35,12 +35,12 @@ def calc_hours(start, end):
     except:
         return 0
 
-with open(file_path, 'r', encoding='utf-8') as file:
+with open(file_path, 'r', encoding='latin-1', errors='replace') as file:
     document = csv.reader(file)
+
     for row in document:
         if not row:
             continue
-
         if row[0].startswith(text_name_employee):
             if current_employee is not None:
                 employees[current_employee] = {
