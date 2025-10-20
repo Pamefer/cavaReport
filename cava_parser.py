@@ -111,7 +111,7 @@ for emp_id, data in employees.items():
             "Jornada total trabajada": total_hours_timestamp,
             "Jornada total trabajada (Decimales)": total_hours,
             "Horas Trabajadas menos almuerzo (Decimales)": net_hours,
-            "Horas Suplementarias (Decimales)(±)": overtime,
+            "Horas Suplementarias (Decimales)(±)": overtime_hours,
         })
 
 # --- EXPORT ---
