@@ -35,6 +35,10 @@ def calc_hours(start, end):
     except:
         return 0
 
+def hours_to_timestamp(hours):
+    total_seconds = int(hours * 3600)
+    return str(timedelta(seconds=total_seconds))
+
 with open(file_path, 'r', encoding='latin-1', errors='replace') as file:
     document = csv.reader(file)
 
@@ -66,8 +70,8 @@ if current_employee is not None:
 # --- BUILD DATAFRAME ---
 report_rows = []
 days_in_month = calendar.monthrange(year, month)[1]
-regular_mandatory_hours=8
-lunch_time = 1
+regular_mandatory_hours="8:00"
+lunch_time = "1:00"
 
 dias_semana = {
     "Monday": "Lunes",
@@ -86,9 +90,12 @@ for emp_id, data in employees.items():
 
         total_hours = calc_hours(s, e)
         total_hours_str = f"{total_hours:.2f}".replace(".", ",")
+        total_hours_timestamp = hours_to_timestamp(total_hours)  # "7:30:00"
+
         net_hours = max(total_hours - 1, 0)
         net_hours_str = f"{net_hours:.2f}".replace(".", ",")
         overtime_hours = 0 if net_hours == 0 else round(net_hours - 8, 2)
+
         # ✅ Convert to string with comma instead of dot
         overtime_str = f"{overtime_hours:.2f}".replace(".", ",")
         # ✅ Calculate the date and weekday
@@ -105,9 +112,10 @@ for emp_id, data in employees.items():
             "Salida": e,
             "Horas mandatorias": regular_mandatory_hours,
             "Hora de Lunch": lunch_time,
-            "Horas Trabajadas": total_hours,
-            "Horas Netas": net_hours_str,
-            "Horas diferencia (±)": overtime_str,
+            "Jornada total trabajada": total_hours_timestamp,
+            "Jornada total trabajada (Decimales)": total_hours,
+            "Horas Trabajadas menos almuerzo (Decimales)": net_hours_str,
+            "Horas Suplementarias (Decimales)(±)": overtime_str,
         })
 
 # --- EXPORT ---
